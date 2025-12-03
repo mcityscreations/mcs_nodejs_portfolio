@@ -1,10 +1,10 @@
 export type UserRole = 'ADMIN' | 'ARTIST' | 'CLIENT';
 
 export interface ISecurityEvaluationResult {
-  /** Indique si la requête peut continuer vers la logique métier. */
+  /** Indicates if a request can process to business logic */
   isAllowed: boolean;
   
-  /** * Le type de défi requis, si isAllowed est false.
+  /** * If is allowed is false, indicates the required action to take
    * Ex: 'NONE', 'BLOCK', 'MFA_REQUIRED', 'CAPTCHA_REQUIRED'
    */
   requiredAction: 'NONE' | 'BLOCK' | 'MFA_REQUIRED' | 'CHALLENGE_REQUIRED'; 
@@ -12,11 +12,11 @@ export interface ISecurityEvaluationResult {
 
 export interface IOTPPayload {
     username: string;
-    otp: string;       // Changé à string pour garantir le format 6 chiffres
-    expiresAt: number;   // Stocke la date/heure exacte d'expiration
+    otp: string;
+    expiresAt: number;
 }
 
-// Interface pour la valeur stockée dans Redis
+// Interface for the values stored in the MFA session (Redis)
 export interface IMfaSessionData {
     username: string;
     privilege: string;
@@ -33,6 +33,6 @@ export class LoginDTO {
 }
 
 export class VerifyMfaDto {
-    public authSessionToken!: string; // Jeton de session MFA
-    public otpCode!: string;          // Le code à 6 chiffres
+    public authSessionToken!: string;
+    public otpCode!: string;
 }

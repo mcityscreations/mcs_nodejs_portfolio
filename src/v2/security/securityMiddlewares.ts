@@ -37,7 +37,7 @@ export class AuthMiddlewares {
             secret: formattedKey,
             algorithms: ['RS256'],
             requestProperty: 'authData',
-            credentialsRequired: true, // CLÉ : Obligatoire
+            credentialsRequired: true,
         });
     }
 
