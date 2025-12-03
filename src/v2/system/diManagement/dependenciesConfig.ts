@@ -26,7 +26,6 @@ import { OpenWeatherProvider } from '../../weather/openWeatherProvider';
 
 
 export function registerDependencies() {
-    // Tous sont des Singletons dans votre architecture
     
     // Infrastructures dependencies
     container.registerSingleton(RedisService);
