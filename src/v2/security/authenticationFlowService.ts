@@ -12,7 +12,6 @@ import { RecaptchaService } from "./recaptcha/recaptchaService";
 import { SecurityLoggerService } from "./logger/loggerService";
 import { MfaSessionService } from "./mfa/mfaService";
 import { HttpError } from "../system/errorHandler/httpError";
-import { OtpService } from "./otp/otpService";
 
 @injectable()
 export class AuthenticationFlowService {
@@ -23,7 +22,6 @@ export class AuthenticationFlowService {
         private readonly _recaptchaService: RecaptchaService, // reCAPTCHA risk evaluation
         private readonly _loggerService: SecurityLoggerService, // Mariadb logging of security events
         private readonly _mfaSessionService: MfaSessionService, // MFA session handler (Redis)
-        private readonly _otpService: OtpService
     ) {}
 
     // Standardised response format
@@ -136,7 +134,13 @@ export class AuthenticationFlowService {
     }
 
     /**
-     * Gère la vérification finale du code OTP.
+     * Checks the provided MFA code and finalizes the authentication process.
+     * @param authSessionToken The MFA session token.
+     * @param otpCode The OTP code provided by the user.
+     * @param ipAddress The IP address of the requester.
+     * @param correlationId The correlation ID for logging.
+     * @param userAgent The user agent of the requester.
+     * @returns The final JWT token upon successful verification.
      */
     public async verifyMfaCode(
         authSessionToken: string, 
@@ -144,9 +148,9 @@ export class AuthenticationFlowService {
         ipAddress: string, 
         correlationId: string, 
         userAgent: string
-    ): Promise<any> { // Retourne le JWT final
+    ): Promise<any> { // Returns the final JWT token
         
-        // 1. Récupérer la session de Redis
+        // 1. Retrieving Redis session
         const sessionData = await this._mfaSessionService.getSession(authSessionToken);
         
         if (!sessionData) {
@@ -154,25 +158,24 @@ export class AuthenticationFlowService {
             throw new HttpError("Session MFA invalide ou expirée. Veuillez vous reconnecter.", 401, true);
         }
         
-        // 2. Vérification du Code OTP
-        // On utilise le username de la session et le code fourni par le client.
+        // 2. Checking the OTP code
         const verifiedSessionData = await this._mfaSessionService.verifyOtpCode(authSessionToken, otpCode);
         
         if (!verifiedSessionData) {
-            // Log et possiblement incrémenter un compteur d'échecs OTP dans la session Redis si nécessaire
+            // Logging failure
             await this._loggerService.logFailure(correlationId, ipAddress, userAgent, sessionData.username, 'OTP_VERIFICATION_FAILED');
             throw new HttpError("Code OTP invalide.", 401, true);
         }
         
-        // 3. Succès : Nettoyage et Génération du JWT Final
+        // 3. Successful verification handling
         
-        // A. Nettoyage de la session MFA (pour éviter la réutilisation)
+        // A. Cleaning up the MFA session to avoid reuse
         await this._mfaSessionService.deleteSession(authSessionToken);
         
-        // B. Log du succès final
+        // B. Loggging success
         await this._loggerService.logSuccess(correlationId, ipAddress, userAgent, sessionData.username, 'FULL_LOGIN_SUCCESS');
         
-        // C. Génération du JWT final avec les données de la session (y compris le privilege)
+        // C. Generating the final JWT token
         const finalResponse = await this._loginService.generateFinalToken(sessionData.username, sessionData.privilege);
         
         return finalResponse;
