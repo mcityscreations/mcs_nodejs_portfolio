@@ -30,7 +30,7 @@ export class WeatherRepository {
             return JSON.parse(jsonString) as IWeatherData;
         } catch (e) {
             console.error(`Erreur de parsing des données Redis pour la clé ${key}:`, e);
-            // Optionnel : supprimer la clé corrompue
+            // Deleting corrupted data
             await this._redisService.del(key); 
             return null;
         }
