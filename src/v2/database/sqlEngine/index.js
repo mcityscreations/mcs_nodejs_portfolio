@@ -2,8 +2,8 @@
 
 // Loading dependencies
 const mysql = require('mysql');
-const mariaDB = require('../dbCredentials'); // Assuming this provides getDatabaseCredentials() and getOauthDBCredentials()
-const mSystem = require('../../system'); // Assuming this contains your errorHandler
+const mariaDB = require('../dbCredentials');
+const mSystem = require('../../system');
 
 // Creating pool connections once
 const defaultPool = mysql.createPool(mariaDB.getDatabaseCredentials());

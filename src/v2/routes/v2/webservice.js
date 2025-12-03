@@ -2,17 +2,10 @@ var express = require('express');
 var router = express.Router();
 const security = require('../../src/v2/security');
 const contact = require('../../src/contact');
-//const generatePassword = require('../controllers/security/login/generatePassword');
 const artwork = require('../../src/artworks');
 
 /** SEND MAIL */
 router.post('/send-email', contact.sendMail);
-
-/**  OAUTH 2.0 LOGIN ENDPOINT */
-///router.post('/oauth2/login', security.login);
-
-/** GENERATE PASSWORD */ // DELETE ON PRODUCTION !!!
-//router.get('/password', generatePassword.getResults);
 
 /*  OAUTH 2.0 AUTHORIZE PAGE / GET method */
 router.get('/oauth2/authorize', security.authorize);
