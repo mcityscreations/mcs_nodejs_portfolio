@@ -9,9 +9,6 @@ const authMiddlewares = container.resolve(AuthMiddlewares);
 import { loginDTO, verifyMfaDTO } from '../../src/v2/security/securityValidators';
 
 
-/** GENERATE PASSWORD */ // DELETE ON PRODUCTION !!!
-router.get('/password', security.generatePassword);
-
 /** LOGIN */
 router.post('/login', 
     authMiddlewares.generateLogID,
