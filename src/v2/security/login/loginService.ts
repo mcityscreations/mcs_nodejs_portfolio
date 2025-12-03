@@ -3,7 +3,6 @@
  * @module LoginService
  * @description This module handles user login operations.
  */
-import { Request } from "express";
 import { promisify } from "util";
 import { injectable } from 'tsyringe';
 import { scrypt as scryptAsync, timingSafeEqual } from "crypto";
@@ -11,7 +10,6 @@ const scrypt = promisify(scryptAsync);
 
 import { HttpError } from "../../system/errorHandler/httpError";
 import { execute } from "../../database/sqlEngine";
-import { generatePassword } from "./generatePassword/generatePassword";
 import { JWTService } from "../jwt/jwtService";
 
 
@@ -134,11 +132,6 @@ export class LoginService {
                     privilege: privilege,
                     jwt_token: token.token
                 };
-    }
-
-    public async generatePassword() {
-        const password = 'mypassword123!';
-        return generatePassword(password)
     }
 
 }

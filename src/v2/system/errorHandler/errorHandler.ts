@@ -12,8 +12,8 @@
  * @returns {errorObject: {message: string, code: number}}
  */
 
-const environment = require('../environment'); // À ajuster selon le chemin réel
-const httpCodes = require('./httpErrorcodes'); // À ajuster selon le chemin réel
+const environment = require('../environment');
+const httpCodes = require('./httpErrorcodes');
 
 import { HttpError } from "./httpError"; 
 

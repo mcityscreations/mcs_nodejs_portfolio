@@ -1,4 +1,4 @@
-import 'reflect-metadata'; // DOIT RESTER LE PREMIER
+import 'reflect-metadata';
 require('dotenv').config();
 
 // Node.js dependencies
@@ -70,15 +70,13 @@ app.use(function(req: Request, res: Response, next: NextFunction) {
 
 // error handler
 app.use(function(err: any, req: Request, res: Response, next: NextFunction) {
-
-    // 2. Utilisation de votre fonction 'handle' pour formater le message
-    // Votre fonction handle doit être capable de gérer 'err' qui est ici un HttpError.
+    // 1. Log the error stack trace
     const formattedError = errorHandler(err);
     
-    // 3. Assurer que le code est cohérent pour l'envoi
+    // 2. Determine the final status code to send
     const finalStatusCode = err.status || formattedError.statusCode || 500;
     
-    // Envoi de la réponse formatée
+    // 3. Send the error response
     res.status(finalStatusCode).json({
         message: formattedError.message,
         statusCode: formattedError.statusCode

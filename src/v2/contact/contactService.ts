@@ -5,6 +5,7 @@
  */
 import { EmailCommunicator } from './emailCommunicator';
 import { SMSCommunicator } from './smsCommunicator';
+import { HttpError } from '../system/errorHandler/httpError';
 
 export class ContactService {
     
@@ -14,8 +15,7 @@ export class ContactService {
     constructor() {}
 
     public async sendNoreplyEmail(to: string[], subject: string, body: string): Promise<void> {
-        
-        // Initialiser le communicateur s'il n'est pas déjà fait
+        // Initialize EmailCommunicator for 'noreply'
         if (!this._noreplyCommunicator) {
             this._noreplyCommunicator = new EmailCommunicator('noreply');
         }
@@ -30,26 +30,24 @@ export class ContactService {
         if (success) {
             console.log(`Email 'noreply' successfully sent to ${to} with subject "${subject}".`);
         } else {
-            // L'erreur de l'échec est déjà levée par sendMessage, donc on ne devrait jamais arriver ici 
-            // si une erreur est levée. Ce bloc est pour une logique de succès ou d'échec non levée.
+            throw new HttpError('Failed to send noreply email.', 500);
         }
     }
 
     public async sendSMS(to: string[], message: string): Promise<void> {
-        // Initialiser le communicateur SMS s'il n'est pas déjà fait
+        // Initialize SMSCommunicator
         if (!this._smsCommunicator) {
             this._smsCommunicator = new SMSCommunicator();
         }
         const success = await this._smsCommunicator.sendMessage(
             to, 
             message, 
-            '' // Sujet non applicable pour SMS
+            '' // No subject for SMS
         );  
         if (success) {
             console.log(`SMS successfully sent to ${to}.`);
         } else {
-            // L'erreur de l'échec est déjà levée par sendMessage, donc on ne devrait jamais arriver ici 
-            // si une erreur est levée. Ce bloc est pour une logique de succès ou d'échec non levée.
+            throw new HttpError('Failed to send noreply sms.', 500);
         }
     }
 

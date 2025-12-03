@@ -24,7 +24,6 @@ export class MfaSessionService {
         const token = randomUUID();
         const data = { username: username, privilege: privilege, mfa_validated: false, createdAt: Date.now() };
         
-        // Délégation du stockage au dépôt
         await this._MFArepository.save(token, data); 
 
         return token;
@@ -35,20 +34,19 @@ export class MfaSessionService {
      * expired (TTL elapsed), or if the data is corrupted.
      */
     public async getSession(token: string): Promise<IMfaSessionData | null> {
-        
-        // Le dépôt gère l'appel brut à Redis et le TTL
+        // Retrieving raw data string from repository
         const dataString = await this._MFArepository.find(token); 
 
         if (!dataString) {
-            // La session est absente (jamais créée ou expirée par TTL)
+            // No data found for the given token (invalid or expired)
             return null; 
         }
 
         try {
-            // Le service gère le parsing JSON (Logique métier)
+            // Then parsing JSON string to object
             const data: IMfaSessionData = JSON.parse(dataString);
             
-            // Validation simple des champs requis pour éviter la corruption
+            // Simple validation of required fields
             if (!data.username || !data.privilege || typeof data.mfa_validated === 'undefined') {
                 console.error(`MfaSessionService: Données de session invalides pour le jeton ${token}.`);
                 return null;
@@ -56,18 +54,17 @@ export class MfaSessionService {
 
             return data;
         } catch (error) {
-            // Erreur de parsing JSON (données Redis corrompues)
+            // Parsing error
             console.error(`MfaSessionService: Erreur de parsing JSON pour le jeton ${token}.`, error);
             return null;
         }
     }
 
     /**
-     * Supprime manuellement une session MFA.
-     * Doit être appelé après une validation MFA réussie pour éviter la réutilisation du jeton.
+     * Deletes an MFA session token from the repository.
+     * Must be called after a successful MFA validation to prevent token reuse.
      */
     public async deleteSession(token: string): Promise<void> {
-        // Le dépôt gère la commande DEL de Redis
         await this._MFArepository.delete(token);
     }
 
@@ -94,30 +91,30 @@ export class MfaSessionService {
 
     public async verifyOtpCode(sessionID: string, otpCode: string): Promise<IMfaSessionData> {
     
-        // 1. Charger et valider la session
+        // 1. Loading the MFA session data
         const mfaSession = await this.getSession(sessionID);
         
         if (!mfaSession || mfaSession.mfa_validated) {
             throw new HttpError("Session MFA invalide ou expirée.", 401, true);
         }
 
-        // 2. Vérification de l'expiration du code (si vous avez stocké otpExpiresAt)
+        // 2. Checking expiration
         if (mfaSession.otpExpiresAt && Date.now() > mfaSession.otpExpiresAt) {
             throw new HttpError("Code OTP expiré.", 401, true);
         }
         
-        // 3. Vérification de la valeur
+        // 3. Checking OTP code
         if (mfaSession.otpCode !== otpCode) {
             throw new HttpError("Code OTP invalide.", 401, true);
         }
 
-        // 4. Succès: Marquer la session comme validée (et nettoyer le code OTP)
+        // 4. Successful validation
         mfaSession.mfa_validated = true;
-        mfaSession.otpCode = undefined; // Supprimer le code pour empêcher la réutilisation
+        mfaSession.otpCode = undefined; // Deleting OTP code after validation
 
-        // 5. Sauvegarder l'état de validation
+        // 5. Saving updated session data
         await this._MFArepository.save(sessionID, mfaSession);
         
-        return mfaSession; // Retourne les données de session validées
+        return mfaSession; // Returning updated session data
     }
 }

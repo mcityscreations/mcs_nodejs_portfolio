@@ -33,7 +33,7 @@ export function verifyMfaDTO(req: Request, res: Response, next: NextFunction): v
     if (!req.body || typeof req.body.authSessionToken !== 'string' || typeof req.body.otpCode !== 'string' || req.body.otpCode.trim() === '') {
         throw new HttpError("Missing or invalid 'authSessionToken' or 'otpCode'.", 400, true);
     }
-    // Vérification de la longueur du code OTP (ex: 6 chiffres)
+    // Checking the length and format of the OTP code (6 digits)
     if (req.body.otpCode.length !== 6 || !/^\d+$/.test(req.body.otpCode)) {
          throw new HttpError("Le code OTP doit être composé de 6 chiffres.", 400, true);
     }

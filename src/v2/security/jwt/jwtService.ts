@@ -122,9 +122,9 @@ export class JWTService {
                 return;
             }
         }
-        // Si le token n'est pas décodable, n'a pas de JTI, ou est déjà expiré, ne rien faire.
+        // If the token is not decodable, has no JTI, or is already expired, do nothing.
     } catch (error) {
-        // En cas d'erreur de décodage, ignorer la révocation pour éviter le crash.
+        // In case of decoding error, ignore the revocation to avoid crash.
         console.error('Failed to decode or revoke token:', error);
     }
 }

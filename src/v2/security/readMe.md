@@ -8,7 +8,7 @@ This module handles authentication and authorization based on user roles. It als
 
 | Feature | Description |
 | --- | --- |
-| Authentication | Traditionnal login process with a username and a password. Passwords are hashed with **Bcrypt** |
+| Authentication | Traditionnal login process with a username and a password. Passwords are hashed with **Scrypt** |
 | **Rate Limiting** & **reCAPTCHA Enterprise** | Each request is protected from bot attacks |
 | MFA & OTP | If reCAPTCHA has some doubts, a **Multi-Factor-Authentication (MFA)** process is launched. Identity is confirmed by a **One-Time-Password (OTP)** mechanism sent by SMS. |
 | JWT Tokens | JWTs bear authentication information related to an identified user. Tokens are signed with the **RS256** algorithm and checked everytime a request reaches a protected route. |
@@ -47,7 +47,7 @@ Ce module gère l'authentification et l'autorisation basées sur les rôles des 
 
 | Fonctionnalité | Description |
 | --- | --- |
-Authentification | Processus de connexion traditionnel avec un nom d'utilisateur et un mot de passe. Les mots de passe sont hachés avec **Bcrypt** |
+Authentification | Processus de connexion traditionnel avec un nom d'utilisateur et un mot de passe. Les mots de passe sont hachés avec **Scrypt** |
 | **Limitation de débit (Rate Limiting)** & **reCAPTCHA Enterprise** | Chaque requête est protégée contre les attaques de bots. |
 | MFA & OTP	| Si reCAPTCHA a des doutes, un processus d'**Authentification Multi-Facteurs (MFA)** est lancé. L'identité est confirmée par un mécanisme de **Mot de Passe à Usage Unique (OTP)** envoyé par SMS. |
 | Tokens JWT | Les **JWT** portent les informations d'authentification relatives à un utilisateur identifié. Les tokens sont signés avec l'algorithme **RS256** et vérifiés à chaque fois qu'une requête atteint une route protégée. |

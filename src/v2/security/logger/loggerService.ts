@@ -11,7 +11,6 @@ export class SecurityLoggerService {
     public async logSuccess(correlationId: string,  ip: string, userAgent: string, username: string, reason?: string, authSessionToken?: string): Promise<void> {
         const handledReason = reason || '';
         const handledSessionAuthToken = authSessionToken || '';
-        // La raison est null ou vide pour le succès
         await this._logRepository.logAttempt(correlationId, handledSessionAuthToken, ip, userAgent, username, true, handledReason);
     }
 

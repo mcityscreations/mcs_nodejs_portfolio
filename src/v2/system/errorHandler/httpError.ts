@@ -10,7 +10,7 @@ export class HttpError extends Error {
         this.isMessagePublic = isMessagePublic;
         this.name = 'HttpError'; 
         
-        // Maintien de la stack trace, essentiel en Node/JS
+        // Keeping proper stack trace (only on V8 engines)
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, HttpError);
         }

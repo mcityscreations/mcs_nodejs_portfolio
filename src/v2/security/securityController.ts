@@ -81,7 +81,7 @@ export class SecurityController {
     public async sendMfaCode(req: Request, res: Response, next: NextFunction) {
         try {
             const { ipAddress, correlationId, userAgent } = this.getRequestMetadata(req);
-            const { authSessionToken } = req.body; // Assurez-vous d'avoir un DTO pour cela!
+            const { authSessionToken } = req.body;
 
             const result = await this._authenticationFlowService.sendMFACode(
                 authSessionToken,

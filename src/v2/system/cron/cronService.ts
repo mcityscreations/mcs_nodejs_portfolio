@@ -4,13 +4,12 @@ import * as cron from 'node-cron';
 import { WeatherService } from '../../weather/weatherService';
 
 /**
- * Configure et démarre les tâches Cron.
- * @param weatherService - L'instance de WeatherService pour l'exécution de la tâche.
+ * Sets up and starts Cron jobs.
+ * @param weatherService - The instance of WeatherService to execute the job.
  */
 export function startWeatherCronJob(weatherService: WeatherService): void {
     
-    // Expression pour s'exécuter toutes les heures, à la minute 0.
-    // L'expression est : [minute] [heure] [jour du mois] [mois] [jour de la semaine]
+    // Cron expression to run every hour at minute 0
     const cronExpression = '0 * * * *'; 
 
     console.log(`Démarrage de la tâche Cron de pré-récupération météo avec l'expression : ${cronExpression}`);
@@ -28,7 +27,7 @@ export function startWeatherCronJob(weatherService: WeatherService): void {
         }
         
     }, {
-        timezone: "Europe/Paris" // Garder l'option supportée
+        timezone: "Europe/Paris"
     });
 
     task.start();

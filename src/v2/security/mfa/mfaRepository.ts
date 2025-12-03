@@ -14,17 +14,17 @@ export class MfaSessionRepository {
     constructor (private readonly redisClient: RedisService){}
 
     public async save(token: string, data: any): Promise<void> {
-        // Clé formatée : mfa:session:<token>
+        // Formatted key : mfa:session:<token>
         const key = `mfa:session:${token}`;
         const dataString = JSON.stringify(data);
         
-        // Commande Redis : SET key value EX seconds
+        // Redis command : SET key value EX seconds
         await this.redisClient.setWithTTL(key, dataString, MFA_SESSION_TTL_SECONDS);
     }
     
     public async find(token: string): Promise<string | null> {
         const key = `mfa:session:${token}`;
-        return this.redisClient.get(key); // Retourne la chaîne JSON ou null
+        return this.redisClient.get(key); // Returns the JSON string or null
     }
     
     public async delete(token: string): Promise<void> {

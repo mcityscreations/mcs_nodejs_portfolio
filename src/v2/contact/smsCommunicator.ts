@@ -35,13 +35,10 @@ export class SMSCommunicator extends CommunicatorBase {
 
     private ovhRequest(method: string, path: string, params: any = {}): Promise<any> {
         return new Promise((resolve, reject) => {
-            // Le client OVH (this._transporter) attend la fonction de callback
             this._transporter.request(method, path, params, (err: any, result: any) => {
                 if (err) {
-                    // Si une erreur survient, rejeter la Promise
                     return reject(err); 
                 }
-                // Sinon, résoudre la Promise avec le résultat
                 resolve(result);
             });
         });
@@ -78,13 +75,11 @@ export class SMSCommunicator extends CommunicatorBase {
                 receivers: [destination] // An array of destination numbers
             });
 
-            // La réponse en cas de succès peut varier, mais si nous arrivons ici, c'est réussi
             console.log(`SMS successfully sent to ${destination} via OVH. Job ID: ${result.jobId}`);
             return true; 
             
         } catch (error: any) {
             console.error(`Error sending SMS to ${destination}:`, error);
-            // Lancer une nouvelle erreur pour la gestion par le service appelant
             const errorMessage = error.message || error.toString();
             throw new HttpError(`OVH SMS sending failed: ${errorMessage}`, 500, false); 
         }

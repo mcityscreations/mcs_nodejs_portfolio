@@ -23,10 +23,7 @@ export class SecurityLogRepository {
             INSERT INTO users_login_journal (id, correlation_id, auth_session_token, username, attempt_time, ip_address, user_agent, success, reason)
             VALUES (NULL, ?, ?, ?, NOW(), ?, ?, ?, ?)
         `;
-        // MariaDB gère l'enregistrement du timestamp 'NOW()'
         const params = [correlationId, authSessionToken, username, ip, userAgent, success, reason];
-        
-        // Exécuter la requête sans attendre de résultat significatif
         await execute(sqlRequest, params, 'oauth', false);
     }
 }

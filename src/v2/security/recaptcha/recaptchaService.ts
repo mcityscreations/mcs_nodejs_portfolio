@@ -48,7 +48,7 @@ export class RecaptchaService {
     // Retrieving the project path
     const projectPath = this._client.projectPath(this.RECAPTCHA_PROJECT_ID);
 
-    // Créez la demande d'évaluation.
+    // Creating the assessment request
     const request = ({
       assessment: {
         event: {

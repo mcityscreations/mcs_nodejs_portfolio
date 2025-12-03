@@ -1,4 +1,3 @@
-const systemEnvironment = require('../../system/environment');
 const { HttpError } = require('../../system/errorHandler/httpError');
 
 module.exports.getDatabaseCredentials = () => {
