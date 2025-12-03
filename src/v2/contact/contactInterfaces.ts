@@ -9,7 +9,7 @@ export interface ICommunicator {
 
 export abstract class CommunicatorBase implements ICommunicator {
     
-    protected _transporter: any; // Placeholder for transporter 
+    protected _transporter: any;
     protected _contactMode: 'noreply' | 'sms' | 'newsletter' | 'support';
     protected _config: any;
 

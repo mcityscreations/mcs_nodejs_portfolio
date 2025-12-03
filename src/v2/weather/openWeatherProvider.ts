@@ -23,13 +23,12 @@ export class OpenWeatherProvider extends WeatherProvider {
                 console.error("Erreur de validation de l'API OpenWeatherMap:", optionsValidationResult.error);
                 throw new HttpError('Invalid options parameters for OpenWeatherMAp.', 500, false);
             }
-            
-            // 1. Définir une variable pour stocker la chaîne 'exclude'
+
+            // 1. Defining a variable to store the 'exclude' string
             let excludeParam: string | undefined = undefined;
 
-            // 2. Vérifiez si options.exclude existe et est un tableau (ce que Zod a validé)
+            // 2. Checking if options.exclude exists and is an array (which Zod validated)
             if (Array.isArray(options.exclude)) {
-                // ⭐️ Utiliser .join(',') pour transformer ['minutely', 'hourly'] en "minutely,hourly"
                 excludeParam = options.exclude.join(',');
             }
             const response = await axios.get<IOpenAPIResponse>(this.baseUrl, {
@@ -37,14 +36,14 @@ export class OpenWeatherProvider extends WeatherProvider {
                     lat: lat,
                     lon: lon,
                     appid: this.apiKey,
-                    units: 'metric', // Pour obtenir la température en Celsius
-                    lang: 'fr' // Optionnel, pour la description en français
+                    units: 'metric',
+                    lang: 'fr'
                 }
             });
 
             const rawData = response.data;
 
-           // Tente de valider les données brutes
+           // Validating the raw data structure
             const validationResult = OpenWeatherMapRawResponseSchema.safeParse(rawData);
 
             if (!validationResult.success) {
@@ -52,7 +51,6 @@ export class OpenWeatherProvider extends WeatherProvider {
                 throw new HttpError('Structure de données API invalide. Impossible de transformer en IWeatherData.', 500, false);
             }
 
-            // Ici, validationResult.data est garanti d'être du bon type (OpenWeatherMapRawResponse)
             const validRawData = validationResult.data;
 
             // Get current date
@@ -69,8 +67,7 @@ export class OpenWeatherProvider extends WeatherProvider {
 
         } catch (error) {
             console.error("Erreur lors de la récupération des données OpenWeatherMap:", error);
-            // Il est crucial de gérer l'erreur et de la relancer sous une forme standardisée
-            throw new Error(`Impossible de récupérer la météo pour Marseille via OpenWeatherMap.`);
+            throw new HttpError(`Impossible de récupérer la météo pour Marseille via OpenWeatherMap.`, 500, true);
         }
     }
 }

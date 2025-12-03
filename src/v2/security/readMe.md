@@ -38,6 +38,8 @@ Each module plays a specific role.
 - **Repositories** manage **CRUD operations** with **MariaDB** and **Redis**. 
 - The securityMiddleware.ts file stores two methods that act as **AuthGuards** which protect specific routes.
 
+<a name="module-de-securite-architecture-nodejs-typescript-conteneur-di-dic"></a>
+## 🇫🇷 Version Française
 
 # 🚀 Module de sécurité | Architecture Node.js, TypeScript, conteneur DI (DiC)
 

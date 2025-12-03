@@ -43,33 +43,10 @@ type OpenWeatherExcludeBlock = 'current' | 'minutely' | 'hourly' | 'daily' | 'al
 type OpenWeatherUnit = 'standard' | 'metric' | 'imperial';
 
 
-/**
- * 2. Définir l'interface de configuration pour l'API.
- *
- * NOTE : L'API OpenWeatherMap utilise le paramètre 'units' et le paramètre 'exclude'.
- */
 export interface IOpenWeatherOptions {
-    /**
-     * Liste des blocs de données à exclure (par exemple, "minutely,hourly").
-     * L'utilisateur peut fournir un tableau que nous convertirons en chaîne,
-     * ou laisser le développeur le fournir directement en chaîne.
-     */
     exclude?: OpenWeatherExcludeBlock[] | string;
-
-    /**
-     * Unité de mesure à utiliser.
-     * Correspond au paramètre 'units' dans l'URL.
-     * Ex: 'metric' pour Celsius, 'imperial' pour Fahrenheit.
-     */
     units: OpenWeatherUnit;
-
-    /**
-     * Langue pour la description météo. Correspond au paramètre 'lang'.
-     * Ex: 'fr', 'en', 'es'.
-     */
     lang?: string;
-    
-    // ... D'autres options pourraient être ajoutées (ex: nombre de jours, etc.)
 }
 
 // Interface of the response sent by OpenWeatherMap

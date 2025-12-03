@@ -52,14 +52,10 @@ export type OpenWeatherUnit = z.infer<typeof OpenWeatherUnitSchema>;
 // WeatherScorePayload Schema
 export const WeatherScorePayloadSchema = z.object({
     
-    // Utilise z.coerce.number() : 
-    // Tente de convertir la valeur en nombre si c'est une chaîne (ex: "1012.5" -> 1012.5)
-    // Ne change rien si c'est déjà un nombre.
-    // Échoue si la conversion n'est pas possible (ex: "abc" -> NaN).
+    // Converting strings to numbers
     pressure: z.coerce.number()
                .positive("La pression doit être une valeur positive."),
                
-    // S'assure que le résultat de la conversion est entre 0 et 100
     humidity: z.coerce.number()
                 .min(0, "L'humidité doit être au minimum 0.")
                 .max(100, "L'humidité doit être au maximum 100."),
