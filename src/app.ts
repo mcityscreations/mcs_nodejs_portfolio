@@ -20,9 +20,6 @@ import { WeatherService } from './v2/weather/weatherService';
 import { startWeatherCronJob } from './v2/system/cron/cronService';
 import { NextFunction, Request, Response } from 'express';
 
-// Old Express routing mechanism
-var v2Router = require('../routes/v2');
-
 // --- APP SETUP ---
 
 // 1. Initializing the DI container
@@ -63,10 +60,6 @@ startWeatherCronJob(weatherServiceInstance);
 // 3. New routing mechanism : Attaching the controllers to the app
 app.use('/v2/security', securityControllerInstance.router);
 app.use('/v2/weather', weatherControllerInstance.router);
-
-// Loading remaining routes (old Express mechanism)
-app.use('/', v2Router);
-
 
 // --- ERROR HANDLING ---
 

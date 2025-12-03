@@ -1,7 +1,7 @@
 // Importation de l'application Express configurée
 import app from './src/app';
 
-// Importation des utilitaires nécessaires (du vieux /bin/www)
+// Importation des utilitaires nécessaires
 import * as http from 'http';
 
 /**
@@ -66,5 +66,5 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-// Exportation du serveur pour les tests (facultatif)
+// Exportation du serveur pour les tests
 export default server;
