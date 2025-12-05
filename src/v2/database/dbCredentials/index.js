@@ -9,7 +9,7 @@ module.exports.getDatabaseCredentials = () => {
         const database = process.env.MARIADB_MAIN_DATABASE || '';
 
         const port = parseInt(rawPort, 10);
-    console.log(host +'-' + rawPort +'-' + user +'-' + password +'-' + database)
+    
         if (!user || !database || isNaN(port)) { throw new HttpError('Unable to load database credentials', 500, false); }
         return {
             host     : host,

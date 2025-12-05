@@ -1,11 +1,11 @@
-// Importation de l'application Express configurée
+// Importing Express app
 import app from './src/app';
 
-// Importation des utilitaires nécessaires
+// Importing http module
 import * as http from 'http';
 
 /**
- * Normalise un port en nombre, chaîne, ou false.
+ * Normalizing a port into a number, string or false
  */
 function normalizePort(val: string | number): number | string | boolean {
   const port = (typeof val === 'string') ? parseInt(val, 10) : val;
@@ -14,17 +14,17 @@ function normalizePort(val: string | number): number | string | boolean {
   return false;
 }
 
-// Récupération du port (du .env, ou par défaut)
+// Retrieving port from .env or default to 4000
 const port = normalizePort('4000');
 app.set('port', port);
 
 /**
- * Crée le serveur HTTP.
+ * Creating the http server.
  */
 const server = http.createServer(app);
 
 /**
- * Gestionnaire d'événements pour l'écoute du port HTTP du serveur.
+ * Event listener for HTTP server "listening" event.
  */
 function onListening(): void {
   const addr = server.address();
@@ -35,7 +35,7 @@ function onListening(): void {
 }
 
 /**
- * Gestionnaire d'événements pour l'erreur "listening".
+ * Event listener for "listening" errors.
  */
 function onError(error: NodeJS.ErrnoException): void {
   if (error.syscall !== 'listen') {
@@ -46,7 +46,7 @@ function onError(error: NodeJS.ErrnoException): void {
     ? 'Pipe ' + port
     : 'Port ' + port;
 
-  // Gérer les erreurs d'écoute spécifiques avec des messages amicaux
+  // Handling specific listen errors
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -61,10 +61,10 @@ function onError(error: NodeJS.ErrnoException): void {
   }
 }
 
-// Écoute sur le port fourni, sur toutes les interfaces réseau.
+// Listening on provided port
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-// Exportation du serveur pour les tests
+// Exporting server for testing purposes
 export default server;

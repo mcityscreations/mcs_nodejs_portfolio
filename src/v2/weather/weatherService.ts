@@ -1,8 +1,7 @@
-import { injectable } from "tsyringe";
+import { injectable, inject } from "tsyringe";
 import { WeatherScorePayloadSchema, IWeatherScorePayload } from "./weatherValidators";
 import { HttpError } from "../system/errorHandler/httpError";
-import { OpenWeatherProvider } from "./openWeatherProvider";
-import { IWeatherData } from "./weatherInterfaces";
+import { IWeatherData, WEATHER_PROVIDER_TOKEN, WeatherProvider } from "./weatherInterfaces";
 import { WeatherRepository } from "./weatherRepository";
 
 @injectable()
@@ -11,7 +10,7 @@ export class WeatherService {
     private readonly MARSEILLE_LONG = 5.372;
 
     constructor(
-        private readonly _openWeatherProvider: OpenWeatherProvider,
+        @inject(WEATHER_PROVIDER_TOKEN) private readonly weatherProvider: WeatherProvider,
         private readonly _weatherRepository: WeatherRepository,
     ){}
 
@@ -38,7 +37,7 @@ export class WeatherService {
     public async setWeather() {
         try {
             // 1. Make API call
-            const weatherData: IWeatherData = await this._openWeatherProvider.getCurrentWeather(this.MARSEILLE_LAT, this.MARSEILLE_LONG, {
+            const weatherData: IWeatherData = await this.weatherProvider.getCurrentWeather(this.MARSEILLE_LAT, this.MARSEILLE_LONG, {
                 exclude: ['minutely','hourly','daily','alerts'],
                 units: 'metric'
             });

@@ -18,11 +18,11 @@ import { OtpService } from '../../security/otp/otpService';
 import { RateLimiterRepository } from '../../security/rateLimiter/rateLimiterRepository';
 import { RateLimiterService } from '../../security/rateLimiter/rateLimiterService';
 import { RecaptchaService } from '../../security/recaptcha/recaptchaService';
-import { DateService } from '../../common/dates/datesService';
 import { WeatherController } from '../../weather/weatherController';
 import { WeatherRepository } from '../../weather/weatherRepository';
 import { WeatherService } from '../../weather/weatherService';
-import { OpenWeatherProvider } from '../../weather/openWeatherProvider';
+import { createWeatherProvider } from '../../weather/weatherConfig';
+import { WeatherProvider, WEATHER_PROVIDER_TOKEN } from '../../weather/weatherInterfaces';
 
 
 export function registerDependencies() {
@@ -47,17 +47,16 @@ export function registerDependencies() {
     container.registerSingleton(OtpService);
     container.registerSingleton(RateLimiterService);
     container.registerSingleton(RecaptchaService);
-    container.registerSingleton(DateService);
     container.registerSingleton(WeatherService);
 
     // Providers //
     // OpenAPIWeather
-    const OPEN_WEATHER_API_KEY = process.env.OPEN_WEATHER_API_KEY || 'CLE_API_PAR_DEFAUT'; 
-    container.register<OpenWeatherProvider>(OpenWeatherProvider, {
-        useFactory: () => {
-            return new OpenWeatherProvider(OPEN_WEATHER_API_KEY);
-        },
-    });
+    container.register<WeatherProvider>(WEATHER_PROVIDER_TOKEN, {
+    useFactory: () => {
+        const provider = createWeatherProvider('OPEN_WEATHER_MAP'); 
+        return provider;
+    },
+});
 
     // Controllers
     container.registerSingleton(SecurityController);

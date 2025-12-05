@@ -16,6 +16,8 @@ export abstract class WeatherProvider {
 
     public abstract getCurrentWeather(latitude: number, longitude: number, options?: IOpenWeatherOptions): Promise<IWeatherData>;
 }
+// Injection token for WeatherProvider
+export const WEATHER_PROVIDER_TOKEN = Symbol('WeatherProvider');
 
 // List of available providers
 export type ProviderType = 'OPEN_WEATHER_MAP' | 'ACCU_WEATHER' | 'METEO_FRANCE';

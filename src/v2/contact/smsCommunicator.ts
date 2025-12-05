@@ -57,7 +57,7 @@ export class SMSCommunicator extends CommunicatorBase {
                 throw new HttpError("No SMS service name found on OVH account.", 500, false);
             }
             
-            // Retreiving the first service name
+            // Retrieving the first service name
             const serviceName = serviceNames[0]; 
 
             // Handling destination as string or array

@@ -33,8 +33,8 @@ export function handle(error: string | Error | IErrorObject, code?: number, isMe
 
     // Handling message
     const msg = isStandardError || isErrorConfigObject
-        ? error.message // Prend le message de l'objet Error ou IErrorObject
-        : String(error); // Sinon, convertit la string passée
+        ? error.message 
+        : String(error);
 
     // Generating stack trace
     const stackToLog = isStandardError ? error.stack : (new Error(msg)).stack;

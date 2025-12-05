@@ -23,11 +23,11 @@ const weatherConfig: IWeatherProviderConfig = {
     },
     accuWeather: {
         apiKey: process.env.ACCU_WEATHER_API_KEY || '',
-        enabled: toBoolean(process.env.ACCU_WEATHER_ENABLED), // Désactivé par défaut
+        enabled: toBoolean(process.env.ACCU_WEATHER_ENABLED), // Disabled by default
     },
     meteoFrance: {
         apiKey: process.env.METEO_FRANCE_API_KEY || '',
-        enabled: toBoolean(process.env.METEO_FRANCE_ENABLED),// Désactivé par défaut
+        enabled: toBoolean(process.env.METEO_FRANCE_ENABLED), // Disabled by default
     },
     defaultProvider: (process.env.DEFAULT_WEATHER_PROVIDER as ProviderType) || 'OPEN_WEATHER_MAP',
 };
@@ -42,8 +42,8 @@ const weatherConfig: IWeatherProviderConfig = {
 export function createWeatherProvider(providerType: ProviderType): WeatherProvider {
     switch (providerType) {
         case 'OPEN_WEATHER_MAP':
-            if (!weatherConfig.openWeatherMap.enabled) {
-               throw new HttpError('OpenWeatherMap Provider is disabled in config.', 500, false);
+            if (!weatherConfig.openWeatherMap.enabled || !weatherConfig.openWeatherMap.apiKey) {
+               throw new HttpError('OpenWeatherMap Provider is disabled in config or missing API key.', 500, false);
             }
             return new OpenWeatherProvider(weatherConfig.openWeatherMap.apiKey);
 
