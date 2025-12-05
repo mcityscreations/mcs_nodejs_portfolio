@@ -1,3 +1,6 @@
+![Node.js](https://img.shields.io/badge/Node.js-v20.x-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Framework-Express-4182?logo=express)
+
 # 🚀 Mcitys API v2.0 Portfolio
 
 This repository offers a concise overview of the Mcitys API, which is currently running in **production**.
