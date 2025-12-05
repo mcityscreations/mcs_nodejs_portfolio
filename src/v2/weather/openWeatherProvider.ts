@@ -3,6 +3,7 @@ import { injectable } from "tsyringe";
 import { WeatherProvider, IOpenWeatherOptions, IWeatherData, IOpenAPIResponse } from "./weatherInterfaces";
 import { OpenWeatherMapRawResponseSchema, OpenWeatherExcludeArraySchema } from './weatherValidators';
 import { HttpError } from "../system/errorHandler/httpError";
+import e from "express";
 
 @injectable()
 export class OpenWeatherProvider extends WeatherProvider {
@@ -37,7 +38,8 @@ export class OpenWeatherProvider extends WeatherProvider {
                     lon: lon,
                     appid: this.apiKey,
                     units: 'metric',
-                    lang: 'fr'
+                    lang: 'fr',
+                    exclude: excludeParam,
                 }
             });
 
